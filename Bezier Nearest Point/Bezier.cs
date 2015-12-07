@@ -1,26 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Solving the Nearest Point-on-Curve Problem
 // and
 // A Bezier Curve-Based Root-Finder
 // by Philip J.Schneider
 // from "Graphics Gems", Academic Press, 1990
+// 
+// Quick and dirty port to C# and .NET by 
+//  Darren R. Starr darren at nocturnal.no 
 
 namespace Bezier_Nearest_Point
 {
-    internal class CurveResult
-    {
-        public Point2[] Left = null;
-        public Point2[] Right = null;
-        public Point2 Point = null;
-    }
-
     public class Bezier
     {
+        // Ugly return value for Curve function
+        internal class CurveResult
+        {
+            public Point2[] Left = null;
+            public Point2[] Right = null;
+            public Point2 Point = null;
+        }
+
         // Maximum depth for recursion
         private static int MaxDepth = 64;
         // Flatness control value 
@@ -142,12 +143,6 @@ namespace Bezier_Nearest_Point
             return (w);
         }
 
-        /// Take binary sign of a, either -1, or 1 if >= 0 
-        private static int SignOf(double a)
-        {
-            return (((a) < 0) ? -1 : 1);
-        }
-
         /// 
         /// CrossingCount :
         /// Count the number of times a Bezier control polygon 
@@ -160,12 +155,12 @@ namespace Bezier_Nearest_Point
             int result = 0;    // Number of zero-crossings	
 
             //  Sign of coefficients	
-            var sign = SignOf(V[0].Y);
+            var sign = Math.Sign(V[0].Y);
             var old_sign = sign;
 
             for (var i = 1; i <= degree; i++)
             {
-                sign = SignOf(V[i].Y);
+                sign = Math.Sign(V[i].Y);
                 if (sign != old_sign)
                     result++;
 
